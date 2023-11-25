@@ -2,6 +2,7 @@ import { StyleSheet, Text, View , FlatList, Image , Pressable , TouchableOpacity
 import React ,{useEffect} from 'react'
 import { useSelector , useDispatch } from 'react-redux'
 import {fetchProducts , SelectAllProducts} from '../../../redux/product/productSlice'
+import {addToCart} from '../../../redux/cart/cartSlice'
 const Home = () => {
 
 
@@ -10,13 +11,15 @@ const Home = () => {
 
 
   useEffect(() => {
-
-
     dispatch(fetchProducts());
-
-
-
   }, [])
+
+
+  const addToCartHandler = (product) => {
+
+    dispatch(addToCart(product));
+  }
+
   return (
     <FlatList
       data={products}
@@ -37,7 +40,7 @@ const Home = () => {
                 <TouchableOpacity
                   style={styles.addToCartButton}
                   onPress={() => {
-                    addToCart(item);
+                    addToCartHandler(item);
                   }}>
                   <Text style={styles.addToCartButtonText}>Add to Cart</Text>
                 </TouchableOpacity>
