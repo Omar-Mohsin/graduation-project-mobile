@@ -1,34 +1,40 @@
-import { StyleSheet, Text, View , FlatList, Image , Pressable , TouchableOpacity } from 'react-native'
-import React ,{useEffect} from 'react'
-import { useSelector , useDispatch } from 'react-redux'
-import {fetchProducts , SelectAllProducts} from '../../../redux/product/productSlice'
-import {addToCart} from '../../../redux/cart/cartSlice'
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {
+  fetchProducts,
+  SelectAllProducts,
+} from '../../../redux/product/productSlice';
+import {addToCart} from '../../../redux/cart/cartSlice';
 const Home = () => {
-
-
-  const products = useSelector(SelectAllProducts)
-  const dispatch = useDispatch()
-
+  const products = useSelector(SelectAllProducts);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchProducts());
-  }, [])
+  }, []);
 
-
-  const addToCartHandler = (product) => {
-
+  const addToCartHandler = product => {
     dispatch(addToCart(product));
-  }
+  };
 
   return (
     <FlatList
       data={products}
       renderItem={({item}) => {
         return (
-          <Pressable key={item.id} onPress={() => showDetailPage(item)}>
+          <Pressable key={item.id}>
             <View style={styles.cardContainer}>
               <Image source={{uri: item.image}} style={styles.cardImage} />
-             
+
               <View style={styles.cardInfo}>
                 <Text
                   style={styles.cardTitle}
@@ -53,9 +59,7 @@ const Home = () => {
   );
 };
 
-
-export default Home
-
+export default Home;
 
 const styles = StyleSheet.create({
   cardContainer: {
