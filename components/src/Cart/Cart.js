@@ -34,9 +34,8 @@ const Cart = () => {
   }
 
   const totalPrice = (product) => {
-    const newArray = cart.filter((item) => item.id === product.id);
-    const ArrayLength = newArray.length;
-    const totalPrice = ArrayLength * product.price;
+    const newArray = cart.filter((item) => item.id === product.id).length;
+    const totalPrice = newArray * product.price;
     return totalPrice;
   };
   return (

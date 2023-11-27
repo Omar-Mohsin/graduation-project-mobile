@@ -14,13 +14,11 @@ import {
   SelectAllProducts,
 } from '../../../redux/product/productSlice';
 import {addToCart} from '../../../redux/cart/cartSlice';
-const Home = () => {
+const Column = () => {
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, []);
+  
 
   const addToCartHandler = product => {
     dispatch(addToCart(product));
@@ -59,7 +57,7 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Column;
 
 const styles = StyleSheet.create({
   cardContainer: {
