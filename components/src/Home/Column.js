@@ -7,53 +7,62 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import {
-  fetchProducts,
-  SelectAllProducts,
-} from '../../../redux/product/productSlice';
+import {SelectAllProducts} from '../../../redux/product/productSlice';
 import {addToCart} from '../../../redux/cart/cartSlice';
 const Column = () => {
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
 
-  
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-  const addToCartHandler = product => {
-    dispatch(addToCart(product));
+  const addToCartHandler = item => {
+    dispatch(addToCart(item));
+
+    setShowSuccessMessage(true);
+    setTimeout(() => {
+      setShowSuccessMessage(false);
+    }, 2000);
   };
 
   return (
-    <FlatList
-      data={products}
-      renderItem={({item}) => {
-        return (
-          <Pressable key={item.id}>
-            <View style={styles.cardContainer}>
-              <Image source={{uri: item.image}} style={styles.cardImage} />
+    <>
+      <FlatList
+        data={products}
+        renderItem={({item}) => {
+          return (
+            <Pressable key={item.id}>
+              <View style={styles.cardContainer}>
+                <Image source={{uri: item.image}} style={styles.cardImage} />
 
-              <View style={styles.cardInfo}>
-                <Text
-                  style={styles.cardTitle}
-                  numberOfLines={2}
-                  ellipsizeMode="tail">
-                  {item.title}
-                </Text>
-                <Text style={styles.cardPrice}>${item.price}</Text>
-                <TouchableOpacity
-                  style={styles.addToCartButton}
-                  onPress={() => {
-                    addToCartHandler(item);
-                  }}>
-                  <Text style={styles.addToCartButtonText}>Add to Cart</Text>
-                </TouchableOpacity>
+                <View style={styles.cardInfo}>
+                  <Text
+                    style={styles.cardTitle}
+                    numberOfLines={2}
+                    ellipsizeMode="tail">
+                    {item.title}
+                  </Text>
+                  <Text style={styles.cardPrice}>${item.price}</Text>
+                  <TouchableOpacity
+                    style={styles.addToCartButton}
+                    onPress={() => {
+                      addToCartHandler(item);
+                    }}>
+                    <Text style={styles.addToCartButtonText}>Add to Cart</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          </Pressable>
-        );
-      }}
-    />
+            </Pressable>
+          );
+        }}
+      />
+      {showSuccessMessage && (
+        <View style={styles.massageContainer}>
+          <Text style={{color: 'white'}}>Item added successfully!</Text>
+        </View>
+      )}
+    </>
   );
 };
 
@@ -118,5 +127,20 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     textAlign: 'center',
+  },
+
+  massageContainer: {
+    display: 'flex',
+    backgroundColor: '#4caf50',
+    padding: '1rem',
+    textAlign: 'center',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
+    height: 50,
   },
 });

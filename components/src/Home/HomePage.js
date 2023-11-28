@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View  , Image} from 'react-native'
 import React , {useState} from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Column from './Column';
@@ -6,6 +6,7 @@ import Grid from './Grid';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { fetchProducts } from '../../../redux/product/productSlice';
+
 const HomePage = () => {
 
     const [toggle, isToggle] = useState(false);
@@ -22,9 +23,8 @@ const HomePage = () => {
           <View style={styles.header}>
             <View style={styles.titleContainer}>
               <View style={styles.titleIcon}>
-                <Icon name="diamond" size={20}></Icon>
+              <Image source={require('../../../assert/watermelon.png')} style={styles.Image} />
               </View>
-              <Text style={styles.title}>Store</Text>
             </View>
             <View style={styles.iconContainer}>
               <Icon
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'space-between',
       backgroundColor: 'white',
-      padding: 10,
+      padding: 3,
       borderBottomWidth: 1,
       borderBottomColor: '#ddd',
     },
@@ -75,4 +75,8 @@ const styles = StyleSheet.create({
     titleIcon: {
       marginRight: 10,
     },
+    Image : { 
+      width: 70,
+      height: 50,
+    }
   });

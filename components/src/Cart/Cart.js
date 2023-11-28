@@ -5,12 +5,13 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
+  Button
 } from 'react-native';
 import React from 'react';
 import {useMemo} from 'react';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {useSelector, useDispatch} from 'react-redux';
-import {SelectAllCart ,addToCart , removeFromCart} from '../../../redux/cart/cartSlice';
+import {SelectAllCart ,addToCart , removeFromCart , clearCart} from '../../../redux/cart/cartSlice';
 const Cart = () => {
   const cart = useSelector(SelectAllCart);
   const dispatch = useDispatch();
@@ -20,7 +21,11 @@ const Cart = () => {
     return [...map.values()];
   }, [cart]);
   
-  
+  const clearCartHandler = () => {
+
+    dispatch (clearCart());
+
+  }
   const itemCartQunitity = (item) => {
     return cart.filter(cartItem => item.id === cartItem.id).length
   }
@@ -41,45 +46,48 @@ const Cart = () => {
   return (
     <View style={styles.container}>
       {filteredCart.length > 0 ? (
-        <SwipeListView
-          data={filteredCart}
-          renderItem={({item}) => (
-            <View key={item.id} style={styles.cardContainer}>
-              <Image source={{uri: item.image}} style={styles.cardImage} />
-              <View style={styles.cardDetails}>
-                <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardDescription}>{item.description}</Text>
-                <View style={styles.quantityContainer}>
-                  <TouchableOpacity onPress={() => removeItemFromCart(item)}>
-                    <Text style={styles.quantityButton}>-</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.quantity}>
-                    {itemCartQunitity(item)}
+        <>
+          <Pressable style={styles.clearCartButton} onPress={clearCartHandler}>
+            <Text style={styles.clearCartButtonText}>Clear Cart</Text>
+          </Pressable>
+          <SwipeListView
+            data={filteredCart}
+            renderItem={({item}) => (
+              <View key={item.id} style={styles.cardContainer}>
+                <Image source={{uri: item.image}} style={styles.cardImage} />
+                <View style={styles.cardDetails}>
+                  <Text style={styles.cardTitle}>{item.title}</Text>
+                  <Text style={styles.cardDescription}>{item.description}</Text>
+                  <View style={styles.quantityContainer}>
+                    <TouchableOpacity onPress={() => removeItemFromCart(item)}>
+                      <Text style={styles.quantityButton}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.quantity}>
+                      {itemCartQunitity(item)}
+                    </Text>
+                    <TouchableOpacity onPress={() => addItemToCart(item)}>
+                      <Text style={styles.quantityButton}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <Text style={styles.cardPrice}>Price: ${item.price}</Text>
+                  <Text style={styles.totalPrice}>
+                    Total: ${totalPrice(item).toFixed(2)}
                   </Text>
-                  <TouchableOpacity onPress={() => addItemToCart(item)}>
-                    <Text style={styles.quantityButton}>+</Text>
-                  </TouchableOpacity>
                 </View>
-                <Text style={styles.cardPrice}>Price: ${item.price}</Text>
-                <Text style={styles.totalPrice}>
-                Total: ${totalPrice(item).toFixed(2)}
-
-                </Text>
-               
               </View>
-            </View>
-          )}
-          renderHiddenItem={data => (
-            <View>
-              <Pressable
-                style={styles.removeButton}
-                onPress={() => removeItemFromCart(data.item)}>
-                <Text style={styles.removeButtonText}>Remove</Text>
-              </Pressable>
-            </View>
-          )}
-          rightOpenValue={-100}
-        />
+            )}
+            renderHiddenItem={data => (
+              <View>
+                <Pressable
+                  style={styles.removeButton}
+                  onPress={() => removeItemFromCart(data.item)}>
+                  <Text style={styles.removeButtonText}>Remove</Text>
+                </Pressable>
+              </View>
+            )}
+            rightOpenValue={-100}
+          />
+        </>
       ) : (
         <Text style={styles.emptyCartText}>Empty Cart</Text>
       )}
@@ -95,6 +103,21 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#EEEEEE',
   },
+  clearCartButton: {
+    backgroundColor: '#FF5722',
+    borderRadius: 10,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  clearCartButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+
   cardContainer: {
     flexDirection: 'row',
     backgroundColor: 'white',
