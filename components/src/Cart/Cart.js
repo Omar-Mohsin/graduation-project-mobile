@@ -5,51 +5,83 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
-  Button
+  Switch,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {useMemo} from 'react';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import {useSelector, useDispatch} from 'react-redux';
-import {SelectAllCart ,addToCart , removeFromCart , clearCart} from '../../../redux/cart/cartSlice';
+import {
+  SelectAllCart,
+  addToCart,
+  removeFromCart,
+  clearCart,
+} from '../../../redux/cart/cartSlice';
 const Cart = () => {
   const cart = useSelector(SelectAllCart);
+
   const dispatch = useDispatch();
+
+  const [toggle, setToggle] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
 
   const filteredCart = useMemo(() => {
     const map = new Map(cart.map(pos => [pos.id, pos]));
     return [...map.values()];
   }, [cart]);
+
+
+  const exchangeRate = {
+    USD: 1,
+    JD: 0.709,
+  };
+
+  const currencySymbol = {
+    USD: "$",
+    JD: "JD",
+  };
+
   
+  const toggleSwitch = () => {
+    setToggle(!toggle);
+  };
   const clearCartHandler = () => {
+    dispatch(clearCart());
+  };
+  const itemCartQunitity = item => {
+    return cart.filter(cartItem => item.id === cartItem.id).length;
+  };
 
-    dispatch (clearCart());
+  const addItemToCart = item => {
+    dispatch(addToCart(item));
+  };
 
-  }
-  const itemCartQunitity = (item) => {
-    return cart.filter(cartItem => item.id === cartItem.id).length
-  }
-
-  const addItemToCart = (item) => {
-      dispatch(addToCart(item));
-  }
-
-  const removeItemFromCart = (item) => {
-      dispatch(removeFromCart(item.id));
-  }
+  const removeItemFromCart = item => {
+    dispatch(removeFromCart(item.id));
+  };
+ 
 
   const totalPrice = (product) => {
     const newArray = cart.filter((item) => item.id === product.id).length;
-    const totalPrice = newArray * product.price;
-    return totalPrice;
-  };
+    const totalPrice = newArray * product.price * exchangeRate[selectedCurrency];
+    return totalPrice.toFixed(2);
+  };  
   return (
     <View style={styles.container}>
       {filteredCart.length > 0 ? (
         <>
-          <Pressable style={styles.clearCartButton} onPress={clearCartHandler}>
-            <Text style={styles.clearCartButtonText}>Clear Cart</Text>
-          </Pressable>
+          <View style={styles.header}>
+            <Pressable
+              style={styles.clearCartButton}
+              onPress={clearCartHandler}>
+              <Text style={styles.clearCartButtonText}>Clear Cart</Text>
+            </Pressable>
+            <Switch
+              value={toggle}
+              onValueChange={toggleSwitch}
+              style={styles.switchButton}
+            />
+          </View>
           <SwipeListView
             data={filteredCart}
             renderItem={({item}) => (
@@ -71,7 +103,7 @@ const Cart = () => {
                   </View>
                   <Text style={styles.cardPrice}>Price: ${item.price}</Text>
                   <Text style={styles.totalPrice}>
-                    Total: ${totalPrice(item).toFixed(2)}
+                  Total: {totalPrice(item)}
                   </Text>
                 </View>
               </View>
@@ -117,7 +149,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-
+  switchButton: {
+    marginLeft: 10,
+  },
   cardContainer: {
     flexDirection: 'row',
     backgroundColor: 'white',
