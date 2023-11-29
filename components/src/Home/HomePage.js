@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
       marginRight: 10,
     },
     Image : { 
-      width: 70,
+      width: 60,
       height: 50,
     }
   });

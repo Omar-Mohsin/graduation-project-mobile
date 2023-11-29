@@ -17,6 +17,7 @@ import {
   removeFromCart,
   clearCart,
 } from '../../../redux/cart/cartSlice';
+import DetailSection from './DetailSection';
 const Cart = () => {
   const cart = useSelector(SelectAllCart);
 
@@ -119,6 +120,7 @@ const Cart = () => {
             )}
             rightOpenValue={-100}
           />
+          <DetailSection></DetailSection>
         </>
       ) : (
         <Text style={styles.emptyCartText}>Empty Cart</Text>
@@ -134,6 +136,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     backgroundColor: '#EEEEEE',
+  },
+  header: {
+    display: 'flex',
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
   },
   clearCartButton: {
     backgroundColor: '#FF5722',
