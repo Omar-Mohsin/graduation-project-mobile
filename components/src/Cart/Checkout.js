@@ -1,0 +1,59 @@
+import { View, Text,StyleSheet,  TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { SelectAllCart } from '../../../redux/cart/cartSlice';
+import { SelectUser } from '../../../redux/auth/authSlice';
+const Checkout = () => {
+  const navigation = useNavigation();
+  const cart = useSelector(SelectAllCart);
+  const user = useSelector(SelectUser);
+  const [cartSummary, setCartSummary] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [deliveryInfo, setDeliveryInfo] = useState({
+    firstName: '',
+    lastName: '',
+    streetName: '',
+    city: '',
+    postalCode: '',
+    buildingNumber: '',
+    phoneNumber: '',
+    additionalDeliveryInfo: '',
+  });
+
+  const handleSubmit = async() => {
+    const data = {
+       id :user.id,
+       cartSummary,
+       deliveryInfo,
+     };
+    console.log("Form data:", data);
+
+    fetch("http://localhost:8000/checkout/api/place_order/", {
+      // put your url
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        if (responseData.success) {
+          console.log("successful!");
+          navigation.navigate('Home');
+        } else {
+          console.error(" failed:", responseData.error);
+        }
+      });
+  };
+  return (
+    <View>
+      <Text>Checkout</Text>
+    </View>
+  )
+}
+
+export default Checkout
+
+const styles = StyleSheet.create({})

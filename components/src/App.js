@@ -2,7 +2,7 @@ import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomePage from './Home/HomePage';
-import Cart from './Cart/Cart';
+import CartStack from './Cart/CartStack';
 import Orders from './Orders/Orders';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AuthPage from './Authentication/AuthPage';
@@ -12,7 +12,7 @@ import {useSelector} from 'react-redux';
 const App = () => {
   const user = useSelector(SelectUser);
   enableScreens();
-console.log(user);
+  console.log(user);
   const Tab = createBottomTabNavigator();
 
   return (
@@ -31,18 +31,20 @@ console.log(user);
           }}
         />
         <Tab.Screen
-          name="Cart"
-          component={Cart}
+          name="CartPage"
+          component={CartStack}
           options={{
             title: 'Cart',
             tabBarLabel: 'Cart',
+            headerShown: false,
+
             tabBarIcon: ({color, size}) => (
               <Icon name="shopping-cart" color={color} size={size} />
             ),
           }}
         />
 
-        {user === null? (
+        {user === null ? (
           <>
             <Tab.Screen
               name="Orders"

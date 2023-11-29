@@ -45,23 +45,23 @@ const Column = () => {
                   </Text>
                   <Text style={styles.cardPrice}>${item.price}</Text>
 
-                  {
-                    true  ? (  // item>0? 
-                      <TouchableOpacity
+                  {true ? ( // item>0?
+                    <TouchableOpacity
                       style={styles.addToCartButton}
                       onPress={() => {
                         addToCartHandler(item);
                       }}>
-                      <Text style={styles.addToCartButtonText}>Add to Cart</Text>
+                      <Text style={styles.addToCartButtonText}>
+                        Add to Cart
+                      </Text>
                     </TouchableOpacity>
-                    ):(
-                      <View style={styles.OutOfStockButton}>
-                      <Text style={styles.addToCartButtonText}>Out Of Stock</Text>
+                  ) : (
+                    <View style={styles.OutOfStockButton}>
+                      <Text style={styles.addToCartButtonText}>
+                        Out Of Stock
+                      </Text>
                     </View>
-
-                    )
-                  }
-                
+                  )}
                 </View>
               </View>
             </Pressable>
@@ -154,20 +154,19 @@ const styles = StyleSheet.create({
     zIndex: 999,
     height: 50,
   },
-  OutOfStockButton : { 
-
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  display: 'inline-block',
-  padding:' 0.5rem 1rem',
-  border: 'none',
-  width: '100%',
-  height: 50,
-  borderRadius: 99,
-  fontWeight: 600,
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundColor: 'gray',
-  color: '#fff',
-  }
-})
+  OutOfStockButton: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    display: 'inline-block',
+    padding: ' 0.5rem 1rem',
+    border: 'none',
+    width: '100%',
+    height: 50,
+    borderRadius: 99,
+    fontWeight: 600,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'gray',
+    color: '#fff',
+  },
+});

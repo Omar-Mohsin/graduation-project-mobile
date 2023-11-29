@@ -8,7 +8,6 @@ import {useNavigation} from '@react-navigation/native';
 const DetailSection = () => {   
 
     const cart = useSelector(SelectAllCart);
-    const dispatch = useDispatch();
     const user = useSelector(SelectUser); 
     const navigation = useNavigation();
 
@@ -27,9 +26,11 @@ const DetailSection = () => {
         return calculateSubtotal() + calculateTax();
       };
 
-      const moveTopSignIn = () => { 
-
+      const moveToSignIn = () => { 
         navigation.navigate('Login');
+      }
+      const moveToCheckout=()=>{
+        navigation.navigate('checkout');
 
       }
     
@@ -48,12 +49,12 @@ const DetailSection = () => {
                 Grand Total: ${calculateGrandTotal().toFixed(2)}
               </Text>
     
-              {user ===null ? (
-                <Pressable style={styles.button} >
+              {true? ( // change it to user !== null ?
+                <Pressable style={styles.button} onPress={moveToCheckout} >
                   <Text style={styles.CheckoutText}>Checkout</Text>
                 </Pressable>
               ) : (
-                <Pressable style={styles.SignButton} onPress={moveTopSignIn} >
+                <Pressable style={styles.SignButton} onPress={moveToSignIn} >
                   <Text style={styles.CheckoutText}>Sign In</Text>
                 </Pressable>
               )}

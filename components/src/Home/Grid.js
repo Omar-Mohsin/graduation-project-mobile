@@ -7,14 +7,12 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import Reactv, {useState} from 'react';
+import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {SelectAllProducts} from '../../../redux/product/productSlice';
 import {addToCart} from '../../../redux/cart/cartSlice';
-import {SelectUser} from '../../../redux/auth/authSlice';
 const Grid = () => {
   const products = useSelector(SelectAllProducts);
-  const user = useSelector(SelectUser);
   const dispatch = useDispatch();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
