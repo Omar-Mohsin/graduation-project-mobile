@@ -4,12 +4,15 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomePage from './Home/HomePage';
 import Cart from './Cart/Cart';
 import Orders from './Orders/Orders';
-import SignIn from './Authentication/Sigin In/SignIn';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import AuthPage from './Authentication/AuthPage';
+import Logout from './Authentication/Logout/Logout';
+import {SelectUser} from '../../redux/auth/authSlice';
+import {useSelector} from 'react-redux';
 const App = () => {
+  const user = useSelector(SelectUser);
   enableScreens();
-
+console.log(user);
   const Tab = createBottomTabNavigator();
 
   return (
@@ -22,7 +25,7 @@ const App = () => {
             title: 'Store',
             tabBarLabel: 'store',
             headerShown: false,
-            tabBarIcon: ({ color, size }) => (
+            tabBarIcon: ({color, size}) => (
               <Icon name="home" color={color} size={size} />
             ),
           }}
@@ -33,36 +36,50 @@ const App = () => {
           options={{
             title: 'Cart',
             tabBarLabel: 'Cart',
-            tabBarIcon: ({ color, size }) => (
+            tabBarIcon: ({color, size}) => (
               <Icon name="shopping-cart" color={color} size={size} />
             ),
           }}
         />
 
-        <>
+        {user === null? (
+          <>
+            <Tab.Screen
+              name="Orders"
+              component={Orders}
+              options={{
+                title: 'Orders',
+                tabBarLabel: 'Orders',
+                tabBarIcon: ({color, size}) => (
+                  <Icon name="truck" color={color} size={size} />
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="Logout"
+              component={Logout}
+              options={{
+                title: 'Logout',
+                tabBarLabel: 'Logout',
+                tabBarIcon: ({color, size}) => (
+                  <Icon name="sign-out" color={color} size={size} />
+                ),
+              }}
+            />
+          </>
+        ) : (
           <Tab.Screen
-            name="Orders"
-            component={Orders}
+            name="Login"
+            component={AuthPage}
             options={{
-              title: 'Orders',
-              tabBarLabel: 'Orders',
-              tabBarIcon: ({ color, size }) => (
-                <Icon name="truck" color={color} size={size} />
+              title: 'Login',
+              tabBarLabel: 'Login',
+              tabBarIcon: ({color, size}) => (
+                <Icon name="sign-in" color={color} size={size} />
               ),
             }}
           />
-        </>
-        <Tab.Screen
-          name="SignIn"
-          component={SignIn}
-          options={{
-            title: 'Sign In',
-            tabBarLabel: 'Sign In',
-            tabBarIcon: ({ color, size }) => (
-              <Icon name="sign-in" color={color} size={size} />
-            ),
-          }}
-        />
+        )}
       </Tab.Navigator>
     </NavigationContainer>
   );

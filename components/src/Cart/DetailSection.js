@@ -2,10 +2,15 @@ import { StyleSheet, Text, View  ,Pressable} from 'react-native'
 import React from 'react'
 import { useSelector , useDispatch } from 'react-redux'
 import { SelectAllCart } from '../../../redux/cart/cartSlice'
+import { SelectUser } from '../../../redux/auth/authSlice'
+import {useNavigation} from '@react-navigation/native';
+
 const DetailSection = () => {   
 
     const cart = useSelector(SelectAllCart);
     const dispatch = useDispatch();
+    const user = useSelector(SelectUser); 
+    const navigation = useNavigation();
 
     const calculateSubtotal = () => {
         return cart.reduce(
@@ -21,6 +26,12 @@ const DetailSection = () => {
       const calculateGrandTotal = () => {
         return calculateSubtotal() + calculateTax();
       };
+
+      const moveTopSignIn = () => { 
+
+        navigation.navigate('Login');
+
+      }
     
 
       return (
@@ -37,12 +48,12 @@ const DetailSection = () => {
                 Grand Total: ${calculateGrandTotal().toFixed(2)}
               </Text>
     
-              {true ? (
+              {user ===null ? (
                 <Pressable style={styles.button} >
                   <Text style={styles.CheckoutText}>Checkout</Text>
                 </Pressable>
               ) : (
-                <Pressable style={styles.SignButton} >
+                <Pressable style={styles.SignButton} onPress={moveTopSignIn} >
                   <Text style={styles.CheckoutText}>Sign In</Text>
                 </Pressable>
               )}

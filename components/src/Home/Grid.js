@@ -1,41 +1,54 @@
-import {StyleSheet, Text, View ,Pressable , Image , TouchableOpacity , FlatList} from 'react-native';
-import Reactv , {useState} from 'react';
-import { useSelector , useDispatch } from 'react-redux';
-import { SelectAllProducts } from '../../../redux/product/productSlice';
-import { addToCart } from '../../../redux/cart/cartSlice';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
+import Reactv, {useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {SelectAllProducts} from '../../../redux/product/productSlice';
+import {addToCart} from '../../../redux/cart/cartSlice';
+import {SelectUser} from '../../../redux/auth/authSlice';
 const Grid = () => {
+  const products = useSelector(SelectAllProducts);
+  const user = useSelector(SelectUser);
+  const dispatch = useDispatch();
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
-const products = useSelector(SelectAllProducts);
-const dispatch = useDispatch();
-const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-
-const addToCartHandler = (item) => {
+  const addToCartHandler = item => {
     dispatch(addToCart(item));
 
     setShowSuccessMessage(true);
     setTimeout(() => {
       setShowSuccessMessage(false);
     }, 2000);
-  };    
-
-
+  };
 
   const renderGridItem = ({item}) => {
     return (
       <Pressable style={styles.gridItem}>
         <View style={styles.gridImageContainer}>
           <Image source={{uri: item.image}} style={styles.gridImage} />
-        
         </View>
         <Text style={styles.gridTitle} numberOfLines={2} ellipsizeMode="tail">
           {item.title}
         </Text>
         <Text style={styles.gridPrice}>${item.price}</Text>
-        <TouchableOpacity
-          style={styles.addToCartButton}
-          onPress={() => addToCartHandler(item)}>
-          <Text style={styles.addToCartButtonText}>+</Text>
-        </TouchableOpacity>
+
+        {true> 0 ? (
+          <TouchableOpacity
+            style={styles.addToCartButton}
+            onPress={() => addToCartHandler(item)}>
+            <Text style={styles.addToCartButtonText}>+</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={styles.OutOfStockButton}>
+            <Text style={styles.OutOfStockText}>X</Text>
+          </View>
+        )}
       </Pressable>
     );
   };
@@ -135,4 +148,25 @@ const styles = StyleSheet.create({
     zIndex: 999,
     height: 50,
   },
+
+
+  OutOfStockButton : { 
+
+    backgroundColor: 'gray',
+    borderRadius: 50,
+    width: 37,
+    height: 37,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: -5,
+    right: -3,
+    }, 
+
+    OutOfStockText :  {
+      color : 'red',
+      fontSize : 24,
+      fontWeight : 'bold',
+
+    }
 });
