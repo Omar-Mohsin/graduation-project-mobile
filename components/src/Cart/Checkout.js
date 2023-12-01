@@ -1,11 +1,13 @@
-import { View, Text,StyleSheet,  TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text,StyleSheet,  TextInput, TouchableOpacity, ScrollView , Button } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import {useNavigation} from '@react-navigation/native';
-import { useSelector } from 'react-redux';
-import { SelectAllCart } from '../../../redux/cart/cartSlice';
+import { useSelector , useDispatch } from 'react-redux';
+import { SelectAllCart , clearCart } from '../../../redux/cart/cartSlice';
 import { SelectUser } from '../../../redux/auth/authSlice';
+
 const Checkout = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const cart = useSelector(SelectAllCart);
   const user = useSelector(SelectUser);
   const [cartSummary, setCartSummary] = useState({});
@@ -21,7 +23,7 @@ const Checkout = () => {
     additionalDeliveryInfo: '',
   });
 
-  const handleSubmit = async() => {
+  const CheckoutHanadler = async() => {
     const data = {
        id :user.id,
        cartSummary,
@@ -42,6 +44,7 @@ const Checkout = () => {
         if (responseData.success) {
           console.log("successful!");
           navigation.navigate('Home');
+          dispatch(clearCart());
         } else {
           console.error(" failed:", responseData.error);
         }
@@ -49,7 +52,7 @@ const Checkout = () => {
   };
   return (
     <View>
-      <Text>Checkout</Text>
+        <Button title='chekcout' onPress={CheckoutHanadler}></Button>
     </View>
   )
 }
