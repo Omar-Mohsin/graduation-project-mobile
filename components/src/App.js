@@ -44,7 +44,7 @@ const App = () => {
           }}
         />
 
-        {user === null ? (
+        {true ? (
           <>
             <Tab.Screen
               name="Orders"

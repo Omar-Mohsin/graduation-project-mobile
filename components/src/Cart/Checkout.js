@@ -58,5 +58,5 @@ const Checkout = () => {
 }
 
 export default Checkout
-
+ 
 const styles = StyleSheet.create({})

@@ -9,7 +9,7 @@ const Logout = () => {
   };
   return (
     <View>
-      <Button onPress={logoutHandler}>Logout</Button>
+      <Button onPress={logoutHandler} title='logout'></Button>
     </View>
   );
 };
