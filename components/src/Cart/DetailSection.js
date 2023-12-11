@@ -49,7 +49,7 @@ const DetailSection = () => {
                 Grand Total: ${calculateGrandTotal().toFixed(2)}
               </Text>
     
-              {true? ( // change it to user !== null ?
+              {user === null? ( // change it to user !== null ?
                 <Pressable style={styles.button} onPress={moveToCheckout} >
                   <Text style={styles.CheckoutText}>Checkout</Text>
                 </Pressable>

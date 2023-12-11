@@ -4,20 +4,21 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Column from './Column';
 import Grid from './Grid';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch  , useSelector} from 'react-redux';
 import { fetchProducts } from '../../../redux/product/productSlice';
-
+import { SelectAllProducts } from '../../../redux/product/productSlice';
 const HomePage = () => {
 
     const [toggle, isToggle] = useState(false);
     const dispatch = useDispatch(); 
-
     useEffect(() => {
         dispatch(fetchProducts());
       }, []);
     const buttonHandler = () => {
       isToggle(!toggle);
     };
+    const products = useSelector(SelectAllProducts);
+    console.log(products) // testing
     return (
         <View style={styles.container}>
           <View style={styles.header}>
