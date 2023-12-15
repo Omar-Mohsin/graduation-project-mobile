@@ -34,18 +34,18 @@ const Column = () => {
           return (
             <Pressable key={item.id}>
               <View style={styles.cardContainer}>
-                <Image source={{uri: item.image}} style={styles.cardImage} />
+                <Image source={{uri: item.image_url}} style={styles.cardImage} />
 
                 <View style={styles.cardInfo}>
                   <Text
                     style={styles.cardTitle}
                     numberOfLines={2}
                     ellipsizeMode="tail">
-                    {item.title}
+                    {item.name}
                   </Text>
                   <Text style={styles.cardPrice}>${item.price}</Text>
 
-                  {true ? ( // item>0?
+                  {item.stocks>0 ? ( // item>0?
                     <TouchableOpacity
                       style={styles.addToCartButton}
                       onPress={() => {
@@ -76,6 +76,7 @@ const Column = () => {
     </>
   );
 };
+
 
 export default Column;
 

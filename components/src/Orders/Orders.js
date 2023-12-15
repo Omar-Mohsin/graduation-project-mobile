@@ -10,7 +10,7 @@ const Orders = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/orders/api/user-orders/${user.id}/`,
+          `http://127.0.0.1:8000/orders/api/user-orders/${user.id}/`, // change the url
         );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -50,7 +50,7 @@ const Orders = () => {
         orders.map(order => {
           return (
             <FlatList
-              data={orders}
+              data={orders} // change it to orders if it not works
               keyExtractor={order => order.order_id}
               renderItem={({item}) => <OrderCard order={item} />}
             />

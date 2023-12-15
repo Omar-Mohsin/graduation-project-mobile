@@ -33,7 +33,7 @@ const SignUp = () => {
       confirmPassword,
     };
 
-    fetch('http://localhost:8000/api/login/', {
+    fetch('http://localhost:8000/api/login/', { // change the url
       // change the url
       method: 'POST',
       headers: {

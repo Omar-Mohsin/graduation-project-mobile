@@ -2,6 +2,7 @@ import { StyleSheet, Text, View  ,TextInput , Pressable} from 'react-native'
 import { addUser } from '../../../../redux/auth/authSlice'
 import { useDispatch } from 'react-redux'
 import React , {useState} from 'react'
+import {useNavigation} from '@react-navigation/native';
 
 const SignIn = () => {
 
@@ -11,6 +12,7 @@ const SignIn = () => {
 
 
 
+  const navigation = useNavigation();
 
   const usernameHandler = (username) => {
     setUsername(username)
@@ -26,7 +28,7 @@ const SignIn = () => {
     };
 
 
-    fetch("http://localhost:8000/api/login/", { // change the url
+    fetch("http://10.0.2.2:8000/api/login/", { // change the url
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +40,8 @@ const SignIn = () => {
         if (responseData.success) {
           console.log("Registration successful!");
           dispatch(addUser(responseData));
-          window.location.href = "/";
+          navigation.navigate('Home');
+
         } else {
           // Registration failed
           console.error("Registration failed:", responseData.error);
@@ -64,7 +67,7 @@ const SignIn = () => {
           secureTextEntry={true}
           onChangeText={passwordHandler}
         />
-        <Pressable style={styles.SignInButton}>
+        <Pressable style={styles.SignInButton} onPress={signInHandler}>
           <Text style={styles.signInText}>Sign in</Text>
         </Pressable>
       </View>

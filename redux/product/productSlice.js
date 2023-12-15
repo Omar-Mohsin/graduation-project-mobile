@@ -3,13 +3,15 @@ import axios from "axios";
 
 
 
-const Products_URL = 'https://fakestoreapi.com/products'; // change this API URL  
+const Products_URL = 'http://10.0.2.2:8000/items/api/data/'; // fix the syntax error here
 
 const initialState = {
   productsList: [],
   status: 'idle', //'idle' | 'loading' | 'succeeded' | 'failed'
   error: null
 }
+
+
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
   try {
     const response = await axios.get(Products_URL);

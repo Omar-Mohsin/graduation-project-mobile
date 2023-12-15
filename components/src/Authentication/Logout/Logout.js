@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Button} from 'react-native';
+import {StyleSheet, Text, View, Button, Pressable} from 'react-native';
 import React from 'react';
 import {removeUser} from '../../../../redux/auth/authSlice';
 import {useDispatch} from 'react-redux';
@@ -8,12 +8,30 @@ const Logout = () => {
     dispatch(removeUser());
   };
   return (
-    <View>
-      <Button onPress={logoutHandler} title='logout'></Button>
+    <View style={styles.container}>
+      <Pressable onPress={logoutHandler} style={styles.ButtonContainer}>
+        <Text>Logout</Text>
+      </Pressable>
     </View>
   );
 };
 
 export default Logout;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ButtonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 10,
+    width: 300,
+    alignItems: 'center',
+    marginTop: 50,
+  },
+});

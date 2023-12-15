@@ -36,8 +36,7 @@ const Checkout = () => {
     };
     console.log('Form data:', data);
 
-    fetch("http://localhost:8000/checkout/api/place_order/", {
-      // put your url
+    fetch("http://localhost:8000/checkout/api/place_order/", { // change the url
       method: "POST",
       headers: {
         "Content-Type": "application/json",
