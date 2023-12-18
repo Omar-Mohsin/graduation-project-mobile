@@ -2,8 +2,10 @@ import {StyleSheet, Text, View, TextInput, Pressable} from 'react-native';
 import React, {useState} from 'react';
 import {addUser} from '../../../../redux/auth/authSlice';
 import {useDispatch} from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 const SignUp = () => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -33,7 +35,7 @@ const SignUp = () => {
       confirmPassword,
     };
 
-    fetch('http://localhost:8000/api/login/', { // change the url
+    fetch('https://watermelon1.pythonanywhere.com/api/signup/', {
       // change the url
       method: 'POST',
       headers: {
@@ -46,7 +48,9 @@ const SignUp = () => {
         if (responseData.success) {
           console.log('Registration successful!');
           dispatch(addUser(responseData));
-          window.location.href = '/';
+          navigation.navigate('Home');
+
+
         } else {
           // Registration failed
           console.error('Registration failed:', responseData.error);

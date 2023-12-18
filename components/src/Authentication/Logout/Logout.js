@@ -10,7 +10,7 @@ const Logout = () => {
   return (
     <View style={styles.container}>
       <Pressable onPress={logoutHandler} style={styles.ButtonContainer}>
-        <Text>Logout</Text>
+        <Text style ={styles.ButtonText}>Logout</Text>
       </Pressable>
     </View>
   );
@@ -34,4 +34,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 50,
   },
+  ButtonText  : { 
+    color : 'white',
+    fontSize : 20,
+  }
 });

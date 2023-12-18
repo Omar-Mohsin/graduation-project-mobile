@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 
-const Products_URL = 'http://10.0.2.2:8000/items/api/data/'; // fix the syntax error here
+const Products_URL = 'https://watermelon1.pythonanywhere.com//items/api/data/'; // fix the syntax error here
 
 const initialState = {
   productsList: [],

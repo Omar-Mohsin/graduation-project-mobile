@@ -87,9 +87,9 @@ const Cart = () => {
             data={filteredCart}
             renderItem={({item}) => (
               <View key={item.id} style={styles.cardContainer}>
-                <Image source={{uri: item.image}} style={styles.cardImage} />
+                <Image source={{uri: item.image_url}} style={styles.cardImage} />
                 <View style={styles.cardDetails}>
-                  <Text style={styles.cardTitle}>{item.title}</Text>
+                  <Text style={styles.cardTitle}>{item.name}</Text>
                   <Text style={styles.cardDescription}>{item.description}</Text>
                   <View style={styles.quantityContainer}>
                     <TouchableOpacity onPress={() => removeItemFromCart(item)}>

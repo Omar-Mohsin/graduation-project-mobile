@@ -28,7 +28,7 @@ const SignIn = () => {
     };
 
 
-    fetch("http://10.0.2.2:8000/api/login/", { // change the url
+    fetch("https://watermelon1.pythonanywhere.com/api/login/", { // change the url
       method: "POST",
       headers: {
         "Content-Type": "application/json",

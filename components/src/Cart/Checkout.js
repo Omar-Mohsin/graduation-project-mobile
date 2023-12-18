@@ -9,6 +9,10 @@ const Checkout = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const cart = useSelector(SelectAllCart);
+  const cartItemsMapping = cart.reduce((cartMap, cartItem) => {
+    cartMap[cartItem.id] = cartItem;
+    return cartMap;
+  }, {});
   const user = useSelector(SelectUser);
   const [delivery_info, setDelivery_info] = useState({
     firstName: '',
@@ -27,16 +31,17 @@ const Checkout = () => {
       [name]: value,
     }));
   };
-
+console.log(cartItemsMapping)
   const CheckoutHandler = async () => {
     const data = {
       id: user.id,
-      cartSummary: {},
+      cartSummary: cartItemsMapping,
       delivery_info,
     };
+
     console.log('Form data:', data);
 
-    fetch("http://localhost:8000/checkout/api/place_order/", { // change the url
+    fetch("https://watermelon1.pythonanywhere.com/checkout/api/place_order/", { // change the url
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,13 +52,14 @@ const Checkout = () => {
       .then((responseData) => {
         if (responseData.success) {
           console.log("successful!");
-          window.location.href = "/";
+          navigation.navigate('Home');
+          dispatch(clearCart());
+
+
         } else {
           console.error(" failed:", responseData.error);
         }
       });
-    navigation.navigate('Home');
-    dispatch(clearCart());
   };
 
   return (
