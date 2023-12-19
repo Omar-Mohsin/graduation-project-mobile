@@ -79,10 +79,10 @@ const styles = StyleSheet.create({
     },
     productPrice: {
       fontSize: 14,
-      color: '#888',
+      color: '#FF5722',
     },
     quantitySold: {
       fontSize: 14,
-      color: '#555',
+      color: 'green',
     },
   });

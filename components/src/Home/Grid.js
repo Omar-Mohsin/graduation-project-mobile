@@ -34,6 +34,8 @@ const Grid = () => {
         <Text style={styles.gridTitle} numberOfLines={2} ellipsizeMode="tail">
           {item.name}
         </Text>
+        <Text style={{color : 'green', marginBottom : 5 ,fontSize : 17}}>{item.stocks} stocks</Text>
+
         <Text style={styles.gridPrice}>${item.price}</Text>
 
         {item.stocks> 0 ? (

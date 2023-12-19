@@ -43,6 +43,7 @@ const Column = () => {
                     ellipsizeMode="tail">
                     {item.name}
                   </Text>
+                  <Text style={{color : 'green', marginBottom : 5 ,fontSize : 17}}>{item.stocks} stocks</Text>
                   <Text style={styles.cardPrice}>${item.price}</Text>
 
                   {item.stocks>0 ? ( // item>0?

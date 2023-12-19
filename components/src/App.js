@@ -6,7 +6,8 @@ import CartStack from './Cart/CartStack';
 import Orders from './Orders/Orders';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon2 from 'react-native-vector-icons/Fontisto';
-
+import FavIcon from 'react-native-vector-icons/MaterialIcons';
+import Favorites from './Fav/Favorites';
 import AuthPage from './Authentication/AuthPage';
 import Logout from './Authentication/Logout/Logout';
 import {SelectUser} from '../../redux/auth/authSlice';
@@ -45,22 +46,32 @@ const App = () => {
               <Icon name="shopping-cart" color={color} size={size} />
             ),
           }}
-        />   
-          <Tab.Screen
-        name="BestSeller"
-        component={BestSeller}
-        options={{
-          title: 'Best Seller 🔥',
-          tabBarLabel: 'Best Seller',
-          tabBarIcon: ({color, size}) => (
-            <Icon2 name="fire" color={color} size={size} />
-          ),
-        }}
-      />
-
+        />
+        <Tab.Screen
+          name="BestSeller"
+          component={BestSeller}
+          options={{
+            title: 'Best Seller 🔥',
+            tabBarLabel: 'Best Seller',
+            tabBarIcon: ({color, size}) => (
+              <Icon2 name="fire" color={color} size={size} />
+            ),
+          }}
+        />
 
         {user !== null ? (
           <>
+            <Tab.Screen
+              name="Favorites"
+              component={Favorites}
+              options={{
+                title: 'Favorites',
+                tabBarLabel: 'Favorites',
+                tabBarIcon: ({color, size}) => (
+                  <FavIcon name="favorite" color={color} size={size} />
+                ),
+              }}
+            />
             <Tab.Screen
               name="Orders"
               component={Orders}
