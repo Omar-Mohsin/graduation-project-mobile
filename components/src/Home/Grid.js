@@ -7,14 +7,94 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {SelectAllProducts} from '../../../redux/product/productSlice';
 import {addToCart} from '../../../redux/cart/cartSlice';
+import FavIcon from 'react-native-vector-icons/MaterialIcons';
+import {SelectUser} from '../../../redux/auth/authSlice';
+import axios from 'axios';
 const Grid = () => {
+  const [favorites, setFavorites] = useState({});
+  const [forceRender, setForceRender] = useState(false);
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const user = useSelector(SelectUser);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://watermelon1.pythonanywhere.com/items/api/${user.id}/favorite-items/`,
+        );
+        setFavorites(response.data);
+      } catch (error) {
+        console.error('Error fetching favorites:', error.message);
+      }
+    };
+
+    fetchData();
+  }, [forceRender]);
+  const isProductInFavorites = productId => {
+    return !favorites.favorite_items?.some(
+      favProduct => favProduct.id === productId,
+    );
+  };
+
+  const addToFavorite = async product => {
+    const data = {
+      userId: user.id,
+      productId: product.id,
+    };
+    console.log(data);
+    try {
+      const response = await fetch(
+        'https://watermelon1.pythonanywhere.com/items/api/favorite/add/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to add to favorites');
+      }
+      setForceRender(!forceRender);
+    } catch (error) {
+      console.error('Error adding to favorites:', error.message);
+    }
+  };
+
+  const removeFavorite = async item => {
+    const data = {
+      userId: user.id,
+      productId: item.id,
+    };
+
+    try {
+      const response = await fetch(
+        `https://watermelon1.pythonanywhere.com/items/api/favorite/remove/`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to remove favorite');
+      }
+      setForceRender(!forceRender);
+    } catch (error) {
+      console.error('Error removing favorite:', error.message);
+    }
+  };
 
   const addToCartHandler = item => {
     dispatch(addToCart(item));
@@ -34,11 +114,28 @@ const Grid = () => {
         <Text style={styles.gridTitle} numberOfLines={2} ellipsizeMode="tail">
           {item.name}
         </Text>
-        <Text style={{color : 'green', marginBottom : 5 ,fontSize : 17}}>{item.stocks} stocks</Text>
+        <Text style={{color: 'green', marginBottom: 5, fontSize: 17}}>
+          {item.stocks} stocks
+        </Text>
 
         <Text style={styles.gridPrice}>${item.price}</Text>
 
-        {item.stocks> 0 ? (
+        {user && isProductInFavorites(item.id) ? (
+          <TouchableOpacity
+            onPress={() => {
+              addToFavorite(item);
+            }}>
+            <FavIcon name="favorite-border" color={'red'} size={30} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              removeFavorite(item);
+            }}>
+            <FavIcon name="favorite" color={'red'} size={30} />
+          </TouchableOpacity>
+        )}
+        {item.stocks > 0 ? (
           <TouchableOpacity
             style={styles.addToCartButton}
             onPress={() => addToCartHandler(item)}>
@@ -149,9 +246,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
 
-
-  OutOfStockButton : { 
-
+  OutOfStockButton: {
     backgroundColor: 'gray',
     borderRadius: 50,
     width: 37,
@@ -161,12 +256,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -5,
     right: -3,
-    }, 
+  },
 
-    OutOfStockText :  {
-      color : 'red',
-      fontSize : 24,
-      fontWeight : 'bold',
-
-    }
+  OutOfStockText: {
+    color: 'red',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
 });

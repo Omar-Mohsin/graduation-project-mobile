@@ -20,7 +20,6 @@ const Column = () => {
   const dispatch = useDispatch();
   const user = useSelector(SelectUser);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showSuccessFavMessage, setShowSuccessFavMessage] = useState(false);
   const [favorites, setFavorites] = useState({});
   const [forceRender, setForceRender] = useState(false);
 
@@ -217,11 +216,7 @@ const Column = () => {
         </View>
       )}
 
-      {showSuccessFavMessage && (
-        <View style={styles.massageContainer}>
-          <Text style={{color: 'white'}}>Item added to Fav successfully!</Text>
-        </View>
-      )}
+
     </>
   );
 };
