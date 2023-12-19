@@ -21,7 +21,11 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator>
+      <Tab.Navigator
+      screenOptions={{
+        unmountOnBlur: true,
+      }}
+      >
         <Tab.Screen
           name="Home"
           component={HomePage}
@@ -70,6 +74,7 @@ const App = () => {
                 tabBarIcon: ({color, size}) => (
                   <FavIcon name="favorite" color={color} size={size} />
                 ),
+
               }}
             />
             <Tab.Screen
