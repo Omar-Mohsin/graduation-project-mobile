@@ -7,15 +7,22 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState , useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {SelectAllProducts} from '../../../redux/product/productSlice';
 import {addToCart} from '../../../redux/cart/cartSlice';
+import {SelectUser} from '../../../redux/auth/authSlice'; 
+import FavIcon from 'react-native-vector-icons/MaterialIcons';
+import axios from 'axios';
+
 const Column = () => {
   const products = useSelector(SelectAllProducts);
   const dispatch = useDispatch();
-
+  const user = useSelector(SelectUser);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessFavMessage, setShowSuccessFavMessage] = useState(false);
+  const [favorites, setFavorites] = useState({});
+  const [forceRender, setForceRender] = useState(false);
 
   const addToCartHandler = item => {
     dispatch(addToCart(item));
@@ -26,6 +33,84 @@ const Column = () => {
     }, 2000);
   };
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://watermelon1.pythonanywhere.com/items/api/${user.id}/favorite-items/`
+        );
+        setFavorites(response.data);
+      } catch (error) {
+        console.error("Error fetching favorites:", error.message);
+      }
+    };
+
+    fetchData();
+  }, [forceRender]);
+  const isProductInFavorites = productId => {
+    return !favorites.favorite_items?.some(
+      favProduct => favProduct.id === productId,
+    );
+  };
+
+  const addToFavorite = async product => {
+    const data = {
+      userId: user.id,
+      productId: product.id,
+    };
+    console.log(data);
+    try {
+      const response = await fetch(
+        'https://watermelon1.pythonanywhere.com/items/api/favorite/add/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to add to favorites');
+      }
+      setForceRender(!forceRender);
+
+   
+    } catch (error) {
+      console.error('Error adding to favorites:', error.message);
+    }
+  };
+
+  const removeFavorite = async (item) => {
+    const data = {
+      userId: user.id,
+      productId: item.id,
+    };
+
+    try {
+      const response = await fetch(
+        `https://watermelon1.pythonanywhere.com/items/api/favorite/remove/`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to remove favorite');
+      }
+      setForceRender(!forceRender);
+   
+    } catch (error) {
+      console.error('Error removing favorite:', error.message);
+    }
+  };
+
   return (
     <>
       <FlatList
@@ -34,7 +119,10 @@ const Column = () => {
           return (
             <Pressable key={item.id}>
               <View style={styles.cardContainer}>
-                <Image source={{uri: item.image_url}} style={styles.cardImage} />
+                <Image
+                  source={{uri: item.image_url}}
+                  style={styles.cardImage}
+                />
 
                 <View style={styles.cardInfo}>
                   <Text
@@ -43,24 +131,78 @@ const Column = () => {
                     ellipsizeMode="tail">
                     {item.name}
                   </Text>
-                  <Text style={{color : 'green', marginBottom : 5 ,fontSize : 17}}>{item.stocks} stocks</Text>
+                  <Text style={{color: 'green', marginBottom: 5, fontSize: 17}}>
+                    {item.stocks} stocks
+                  </Text>
                   <Text style={styles.cardPrice}>${item.price}</Text>
 
-                  {item.stocks>0 ? ( // item>0?
-                    <TouchableOpacity
-                      style={styles.addToCartButton}
-                      onPress={() => {
-                        addToCartHandler(item);
-                      }}>
-                      <Text style={styles.addToCartButtonText}>
-                        Add to Cart
-                      </Text>
-                    </TouchableOpacity>
+                  {item.stocks > 0 ? (
+                    <View style={styles.buttonContainer}>
+                      <TouchableOpacity
+                        style={styles.addToCartButton}
+                        onPress={() => {
+                          addToCartHandler(item);
+                        }}>
+                        <Text style={styles.addToCartButtonText}>
+                          Add to Cart
+                        </Text>
+                      </TouchableOpacity>
+
+                      {user && isProductInFavorites(item.id) ? (
+                        <TouchableOpacity
+                          onPress={() => {
+                            addToFavorite(item);
+                          }}>
+                          <FavIcon
+                            name="favorite-border"
+                            color={'red'}
+                            size={30}
+                          />
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity
+                        onPress={() => {
+                          removeFavorite(item);
+                        }}>
+                        <FavIcon
+                          name="favorite"
+                          color={'red'}
+                          size={30}
+                        />
+                      </TouchableOpacity>
+                      )}
+                    </View>
                   ) : (
+                    <View style={styles.buttonContainer}>
                     <View style={styles.OutOfStockButton}>
                       <Text style={styles.addToCartButtonText}>
                         Out Of Stock
                       </Text>
+                      </View>
+                      {user && isProductInFavorites(item.id) ? (
+                        <TouchableOpacity
+                          onPress={() => {
+                            addToFavorite(item);
+                          }}>
+                          <FavIcon
+                            name="favorite-border"
+                            color={'red'}
+                            size={30}
+                          />
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity
+                        onPress={() => {
+                          removeFavorite(item);
+                        }}>
+                        <FavIcon
+                          name="favorite"
+                          color={'red'}
+                          size={30}
+                        />
+                      </TouchableOpacity>
+                      )}
+               
                     </View>
                   )}
                 </View>
@@ -74,10 +216,15 @@ const Column = () => {
           <Text style={{color: 'white'}}>Item added successfully!</Text>
         </View>
       )}
+
+      {showSuccessFavMessage && (
+        <View style={styles.massageContainer}>
+          <Text style={{color: 'white'}}>Item added to Fav successfully!</Text>
+        </View>
+      )}
     </>
   );
 };
-
 
 export default Column;
 
@@ -119,6 +266,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     alignItems: 'center',
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 10,
+  },
   addToCartButtonText: {
     color: 'white',
     fontWeight: 'bold',
@@ -157,18 +310,10 @@ const styles = StyleSheet.create({
     height: 50,
   },
   OutOfStockButton: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    display: 'inline-block',
-    padding: ' 0.5rem 1rem',
-    border: 'none',
-    width: '100%',
-    height: 50,
-    borderRadius: 99,
-    fontWeight: 600,
+    backgroundColor: 'grey',
+    borderRadius: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 25,
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'gray',
-    color: '#fff',
   },
 });
