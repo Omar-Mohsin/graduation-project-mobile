@@ -31,7 +31,6 @@ const Checkout = () => {
       [name]: value,
     }));
   };
-console.log(cartItemsMapping)
   const CheckoutHandler = async () => {
     const data = {
       id: user.id,
@@ -39,7 +38,6 @@ console.log(cartItemsMapping)
       delivery_info,
     };
 
-    console.log('Form data:', data);
 
     fetch("https://watermelon1.pythonanywhere.com/checkout/api/place_order/", { // change the url
       method: "POST",

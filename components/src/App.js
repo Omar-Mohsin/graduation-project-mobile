@@ -16,7 +16,6 @@ import BestSeller from './BestSellers/BestSeller';
 const App = () => {
   const user = useSelector(SelectUser);
   enableScreens();
-  console.log(user);
   const Tab = createBottomTabNavigator();
 
   return (

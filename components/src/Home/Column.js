@@ -7,11 +7,11 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState , useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import {SelectAllProducts} from '../../../redux/product/productSlice';
 import {addToCart} from '../../../redux/cart/cartSlice';
-import {SelectUser} from '../../../redux/auth/authSlice'; 
+import {SelectUser} from '../../../redux/auth/authSlice';
 import FavIcon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios';
 
@@ -32,16 +32,15 @@ const Column = () => {
     }, 2000);
   };
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://watermelon1.pythonanywhere.com/items/api/${user.id}/favorite-items/`
+          `https://watermelon1.pythonanywhere.com/items/api/${user.id}/favorite-items/`,
         );
         setFavorites(response.data);
       } catch (error) {
-        console.error("Error fetching favorites:", error.message);
+        console.error('Error fetching favorites:', error.message);
       }
     };
 
@@ -58,7 +57,6 @@ const Column = () => {
       userId: user.id,
       productId: product.id,
     };
-    console.log(data);
     try {
       const response = await fetch(
         'https://watermelon1.pythonanywhere.com/items/api/favorite/add/',
@@ -75,14 +73,12 @@ const Column = () => {
         throw new Error('Failed to add to favorites');
       }
       setForceRender(!forceRender);
-
-   
     } catch (error) {
       console.error('Error adding to favorites:', error.message);
     }
   };
 
-  const removeFavorite = async (item) => {
+  const removeFavorite = async item => {
     const data = {
       userId: user.id,
       productId: item.id,
@@ -104,7 +100,6 @@ const Column = () => {
         throw new Error('Failed to remove favorite');
       }
       setForceRender(!forceRender);
-   
     } catch (error) {
       console.error('Error removing favorite:', error.message);
     }
@@ -146,37 +141,36 @@ const Column = () => {
                           Add to Cart
                         </Text>
                       </TouchableOpacity>
-
-                      {user && isProductInFavorites(item.id) ? (
-                        <TouchableOpacity
-                          onPress={() => {
-                            addToFavorite(item);
-                          }}>
-                          <FavIcon
-                            name="favorite-border"
-                            color={'red'}
-                            size={30}
-                          />
-                        </TouchableOpacity>
+                      {user ? (
+                        isProductInFavorites(item.id) ? (
+                          <TouchableOpacity
+                            onPress={() => {
+                              addToFavorite(item);
+                            }}>
+                            <FavIcon
+                              name="favorite-border"
+                              color={'red'}
+                              size={30}
+                            />
+                          </TouchableOpacity>
+                        ) : (
+                          <TouchableOpacity
+                            onPress={() => {
+                              removeFavorite(item);
+                            }}>
+                            <FavIcon name="favorite" color={'red'} size={30} />
+                          </TouchableOpacity>
+                        )
                       ) : (
-                        <TouchableOpacity
-                        onPress={() => {
-                          removeFavorite(item);
-                        }}>
-                        <FavIcon
-                          name="favorite"
-                          color={'red'}
-                          size={30}
-                        />
-                      </TouchableOpacity>
+                        <></>
                       )}
                     </View>
                   ) : (
                     <View style={styles.buttonContainer}>
-                    <View style={styles.OutOfStockButton}>
-                      <Text style={styles.addToCartButtonText}>
-                        Out Of Stock
-                      </Text>
+                      <View style={styles.OutOfStockButton}>
+                        <Text style={styles.addToCartButtonText}>
+                          Out Of Stock
+                        </Text>
                       </View>
                       {user && isProductInFavorites(item.id) ? (
                         <TouchableOpacity
@@ -191,17 +185,12 @@ const Column = () => {
                         </TouchableOpacity>
                       ) : (
                         <TouchableOpacity
-                        onPress={() => {
-                          removeFavorite(item);
-                        }}>
-                        <FavIcon
-                          name="favorite"
-                          color={'red'}
-                          size={30}
-                        />
-                      </TouchableOpacity>
+                          onPress={() => {
+                            removeFavorite(item);
+                          }}>
+                          <FavIcon name="favorite" color={'red'} size={30} />
+                        </TouchableOpacity>
                       )}
-               
                     </View>
                   )}
                 </View>
@@ -215,8 +204,6 @@ const Column = () => {
           <Text style={{color: 'white'}}>Item added successfully!</Text>
         </View>
       )}
-
-
     </>
   );
 };

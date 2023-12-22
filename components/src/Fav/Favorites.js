@@ -25,7 +25,6 @@ const Favorites = () => {
     };
 
     fetchData();
-    console.log('fetching data');
   }, [forceRender]);
 
   const removeFavorite = async (item) => {

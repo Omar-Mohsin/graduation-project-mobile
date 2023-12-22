@@ -5,7 +5,6 @@ import SignUp from './Sigin Up/SignUp';
 const AuthPage = () => {
   const [toggle, setToggle1] = useState(false);
 
-  console.log(toggle);
 
   const onSwitchHandler = () => {
     setToggle1(!toggle);

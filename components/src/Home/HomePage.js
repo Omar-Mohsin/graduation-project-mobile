@@ -18,7 +18,6 @@ const HomePage = () => {
       isToggle(!toggle);
     };
     const products = useSelector(SelectAllProducts);
-    console.log(products) // testing
     return (
         <View style={styles.container}>
           <View style={styles.header}>

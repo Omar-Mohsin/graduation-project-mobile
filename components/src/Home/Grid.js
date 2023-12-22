@@ -47,7 +47,6 @@ const Grid = () => {
       userId: user.id,
       productId: product.id,
     };
-    console.log(data);
     try {
       const response = await fetch(
         'https://watermelon1.pythonanywhere.com/items/api/favorite/add/',
