@@ -77,11 +77,6 @@ const Cart = () => {
               onPress={clearCartHandler}>
               <Text style={styles.clearCartButtonText}>Clear Cart</Text>
             </Pressable>
-            <Switch
-              value={toggle}
-              onValueChange={toggleSwitch}
-              style={styles.switchButton}
-            />
           </View>
           <SwipeListView
             data={filteredCart}

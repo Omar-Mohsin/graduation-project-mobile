@@ -37,7 +37,7 @@ const BestSeller = () => {
         {data?.top_items ? (
           <FlatList
             data={data.top_items}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => (item.id ? item.id.toString() : Math.random().toString())}
             renderItem={renderItem}
             horizontal
             showsHorizontalScrollIndicator={false}

@@ -134,6 +134,6 @@ const styles = StyleSheet.create({
   },
   signInText: {
     fontSize: 24,
-    color: 'red'
+    color: 'white'
   },
 });
