@@ -104,36 +104,29 @@ const Grid = () => {
     }, 2000);
   };
 
-  const renderGridItem = ({item}) => {
+  const renderGridItem = ({ item }) => {
     return (
       <Pressable style={styles.gridItem}>
         <View style={styles.gridImageContainer}>
-          <Image source={{uri: item.image_url}} style={styles.gridImage} />
+          <Image source={{ uri: item.image_url }} style={styles.gridImage} />
         </View>
         <Text style={styles.gridTitle} numberOfLines={2} ellipsizeMode="tail">
           {item.name}
         </Text>
-        <Text style={{color: 'green', marginBottom: 5, fontSize: 17}}>
+        <Text style={{ color: 'green', marginBottom: 5, fontSize: 17 }}>
           {item.stocks} stocks
         </Text>
-
         <Text style={styles.gridPrice}>${item.price}</Text>
-
-        {user && isProductInFavorites(item.id) ? (
+  
+        {user && isProductInFavorites(item.id) && (
           <TouchableOpacity
             onPress={() => {
               addToFavorite(item);
             }}>
             <FavIcon name="favorite-border" color={'red'} size={30} />
           </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              removeFavorite(item);
-            }}>
-            <FavIcon name="favorite" color={'red'} size={30} />
-          </TouchableOpacity>
         )}
+  
         {item.stocks > 0 ? (
           <TouchableOpacity
             style={styles.addToCartButton}
@@ -148,6 +141,7 @@ const Grid = () => {
       </Pressable>
     );
   };
+  
   return (
     <View style={styles.container}>
       <FlatList data={products} renderItem={renderGridItem} numColumns={2} />
