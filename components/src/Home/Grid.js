@@ -160,7 +160,7 @@ const Grid = () => {
   );
 };
 
-export default Grid;
+export default React.memo(Grid);
 
 const styles = StyleSheet.create({
   container: {

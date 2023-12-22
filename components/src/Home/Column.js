@@ -208,7 +208,7 @@ const Column = () => {
   );
 };
 
-export default Column;
+export default React.memo(Column);
 
 const styles = StyleSheet.create({
   cardContainer: {
