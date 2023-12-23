@@ -43,9 +43,10 @@ const Column = () => {
         console.error('Error fetching favorites:', error.message);
       }
     };
-
+    console.log('user', user);
     fetchData();
   }, [forceRender]);
+
   const isProductInFavorites = productId => {
     return !favorites.favorite_items?.some(
       favProduct => favProduct.id === productId,
