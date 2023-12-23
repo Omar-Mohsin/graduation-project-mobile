@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View  ,Pressable} from 'react-native'
 import React from 'react'
-import { useSelector , useDispatch } from 'react-redux'
+import { useSelector  } from 'react-redux'
 import { SelectAllCart } from '../../../redux/cart/cartSlice'
 import { SelectUser } from '../../../redux/auth/authSlice'
 import {useNavigation} from '@react-navigation/native';

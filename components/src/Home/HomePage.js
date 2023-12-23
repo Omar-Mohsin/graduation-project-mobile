@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View  , Image} from 'react-native'
+import { StyleSheet, View  , Image} from 'react-native'
 import React , {useState} from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Column from './Column';

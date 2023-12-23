@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Switch} from 'react-native';
+import {StyleSheet, View, Switch} from 'react-native';
 import React, {useState} from 'react';
 import LoginIn from './LogIn/LoginIn';
 import SignUp from './Sigin Up/SignUp';

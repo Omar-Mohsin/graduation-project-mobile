@@ -5,7 +5,6 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
-  Switch,
 } from 'react-native';
 import React, {useState} from 'react';
 import {useMemo} from 'react';
@@ -37,15 +36,9 @@ const Cart = () => {
     JD: 0.709,
   };
 
-  const currencySymbol = {
-    USD: "$",
-    JD: "JD",
-  };
-
+ 
   
-  const toggleSwitch = () => {
-    setToggle(!toggle);
-  };
+ 
   const clearCartHandler = () => {
     dispatch(clearCart());
   };
