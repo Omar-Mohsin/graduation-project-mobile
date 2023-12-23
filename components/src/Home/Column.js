@@ -43,7 +43,6 @@ const Column = () => {
         console.error('Error fetching favorites:', error.message);
       }
     };
-    console.log('user', user);
     fetchData();
   }, [forceRender]);
 
