@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {SelectAllProducts} from '../../../redux/product/productSlice';
-import {addToCart} from '../../../redux/cart/cartSlice';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { SelectAllProducts } from '../../../redux/product/productSlice';
+import { addToCart } from '../../../redux/cart/cartSlice';
 import FavIcon from 'react-native-vector-icons/MaterialIcons';
-import {SelectUser} from '../../../redux/auth/authSlice';
+import { SelectUser } from '../../../redux/auth/authSlice';
 import axios from 'axios';
 const Grid = () => {
   const [favorites, setFavorites] = useState({});
@@ -116,17 +116,26 @@ const Grid = () => {
         <Text style={{ color: 'green', marginBottom: 5, fontSize: 17 }}>
           {item.stocks} stocks
         </Text>
+
         <Text style={styles.gridPrice}>${item.price}</Text>
-  
-        {user && isProductInFavorites(item.id) && (
+
+        {
+        user ?
+        ( isProductInFavorites(item.id) ? (
           <TouchableOpacity
             onPress={() => {
               addToFavorite(item);
             }}>
             <FavIcon name="favorite-border" color={'red'} size={30} />
           </TouchableOpacity>
-        )}
-  
+        ) : (
+          <TouchableOpacity
+            onPress={() => {
+              removeFavorite(item);
+            }}>
+            <FavIcon name="favorite" color={'red'} size={30} />
+          </TouchableOpacity>
+        )) : null}
         {item.stocks > 0 ? (
           <TouchableOpacity
             style={styles.addToCartButton}
@@ -141,13 +150,12 @@ const Grid = () => {
       </Pressable>
     );
   };
-  
   return (
     <View style={styles.container}>
       <FlatList data={products} renderItem={renderGridItem} numColumns={2} />
       {showSuccessMessage && (
         <View style={styles.massageContainer}>
-          <Text style={{color: 'white'}}>Item added successfully!</Text>
+          <Text style={{ color: 'white' }}>Item added successfully!</Text>
         </View>
       )}
     </View>
