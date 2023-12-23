@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View, TextInput, Button, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -134,4 +134,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Checkout;
+export default React.memo(Checkout);

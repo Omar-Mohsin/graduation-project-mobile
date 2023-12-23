@@ -17,7 +17,6 @@ const HomePage = () => {
     const buttonHandler = () => {
       isToggle(!toggle);
     };
-    const products = useSelector(SelectAllProducts);
     return (
         <View style={styles.container}>
           <View style={styles.header}>
@@ -42,7 +41,7 @@ const HomePage = () => {
     
 }
 
-export default HomePage
+export default React.memo(HomePage);
 
 const styles = StyleSheet.create({
     container: {
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
     titleContainer: {
       flexDirection: 'row',
       marginLeft: 10,
-      alignItems: 'center', // Align items vertically
+      alignItems: 'center',
     },
     title: {
       color: 'black',

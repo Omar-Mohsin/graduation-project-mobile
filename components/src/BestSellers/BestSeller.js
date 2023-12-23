@@ -50,7 +50,7 @@ const BestSeller = () => {
   );
 };
 
-export default BestSeller;
+export default React.memo(BestSeller);
 const styles = StyleSheet.create({
     container: {
       marginVertical: 10,
