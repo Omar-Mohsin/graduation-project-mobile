@@ -173,24 +173,28 @@ const Column = () => {
                           Out Of Stock
                         </Text>
                       </View>
-                      {user && isProductInFavorites(item.id) ? (
-                        <TouchableOpacity
-                          onPress={() => {
-                            addToFavorite(item);
-                          }}>
-                          <FavIcon
-                            name="favorite-border"
-                            color={'red'}
-                            size={30}
-                          />
-                        </TouchableOpacity>
+                      {user ? (
+                        isProductInFavorites(item.id) ? (
+                          <TouchableOpacity
+                            onPress={() => {
+                              addToFavorite(item);
+                            }}>
+                            <FavIcon
+                              name="favorite-border"
+                              color={'red'}
+                              size={30}
+                            />
+                          </TouchableOpacity>
+                        ) : (
+                          <TouchableOpacity
+                            onPress={() => {
+                              removeFavorite(item);
+                            }}>
+                            <FavIcon name="favorite" color={'red'} size={30} />
+                          </TouchableOpacity>
+                        )
                       ) : (
-                        <TouchableOpacity
-                          onPress={() => {
-                            removeFavorite(item);
-                          }}>
-                          <FavIcon name="favorite" color={'red'} size={30} />
-                        </TouchableOpacity>
+                        <></>
                       )}
                     </View>
                   )}
